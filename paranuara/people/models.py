@@ -68,3 +68,12 @@ class Food(models.Model):
     name = models.CharField(max_length=50, null=False, unique=True)
     type = models.CharField(null=True, blank=True, max_length=1,
                             choices=FOOD_TYPE_CHOICES)
+
+
+class FavouriteFood(models.Model):
+
+    class Meta:
+        unique_together = ('person', 'food',)
+
+    person = models.ForeignKey(Person, null=False)
+    food = models.ForeignKey(Food, null=False)
