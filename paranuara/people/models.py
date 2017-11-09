@@ -36,3 +36,12 @@ class Person(models.Model):
 
     company = models.ForeignKey(Company, null=True, blank=True)
 
+
+class FriendRelationship(models.Model):
+    """Defines a friendship between two Persons"""
+
+    class Meta:
+        unique_together = ('person_1', 'person_2',)
+
+    person_1 = models.ForeignKey(Person, null=False, related_name='person1')
+    person_2 = models.ForeignKey(Person, null=False, related_name='person2')
