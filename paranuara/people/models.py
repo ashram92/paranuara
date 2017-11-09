@@ -45,3 +45,26 @@ class FriendRelationship(models.Model):
 
     person_1 = models.ForeignKey(Person, null=False, related_name='person1')
     person_2 = models.ForeignKey(Person, null=False, related_name='person2')
+
+
+class Tag(models.Model):
+    """Tag related to a single Person"""
+
+    person = models.ForeignKey(Person, null=False)
+    tag_name = models.CharField(max_length=100, null=False)
+
+
+class Food(models.Model):
+    """Fruit or Vegetable"""
+
+    FRUIT = 'F'
+    VEGETABLE = 'V'
+
+    FOOD_TYPE_CHOICES = (
+        (FRUIT, 'Fruit'),
+        (VEGETABLE, 'Vegetable'),
+    )
+
+    name = models.CharField(max_length=50, null=False, unique=True)
+    type = models.CharField(null=True, blank=True, max_length=1,
+                            choices=FOOD_TYPE_CHOICES)
