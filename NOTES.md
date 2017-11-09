@@ -17,8 +17,8 @@ I've made some normalizations according to what I think will help build the requ
 
 ### Person (Naming based on README spec)
 
-- hash_id (_id) - int
-- id (index) - unique str
+- hash_id (_id) - str
+- id (index) - unique int
 - guid (guid) - uuid
 - has_died (has_died) - bool
 - balance (balance) - int (in cents)
