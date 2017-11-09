@@ -18,11 +18,8 @@ class Command(BaseCommand):
                 try:
                     company = Company(id=company_data['index'],
                                       name=company_data['company'])
-                    company.save()
-                    Company(id=company_data['index'],
-                                      name=company_data['company']).save()
+                    company.save(force_insert=True)
                 except IntegrityError:
-                    print('Boob')
                     self.stdout.write(self.style.ERROR(
                         'Company already imported: {}'.format(company))
                     )
