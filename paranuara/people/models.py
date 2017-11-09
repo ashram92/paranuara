@@ -50,8 +50,11 @@ class FriendRelationship(models.Model):
 class Tag(models.Model):
     """Tag related to a single Person"""
 
+    class Meta:
+        unique_together = ('person', 'tag_name',)
+
     person = models.ForeignKey(Person, null=False)
-    tag_name = models.CharField(max_length=100, null=False)
+    tag_name = models.CharField(max_length=20, null=False)
 
 
 class Food(models.Model):
