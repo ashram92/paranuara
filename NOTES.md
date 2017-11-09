@@ -64,3 +64,18 @@ I've made some normalizations according to what I think will help build the requ
 \* Note: Need a unique index on (person_id, food_id)
 
 
+## Import Scripts [9/11/17]
+
+After creating the models and the relevant migrations, I made the import scripts.
+
+The script to import companies was quite straightfoward, however the one for people was more complex.
+It required that the data be imported in a specific order to ensure that the constraints in the database
+would not break.
+
+### Import Order
+
+1. Companies
+2. Food
+3. Persons
+4. Friendships
+5. Favourite Foods
