@@ -2,7 +2,7 @@ import json
 from django.core.management.base import BaseCommand, CommandError
 from django.db import IntegrityError
 
-from companies.models import Company
+from paranuara.companies.models import Company
 
 
 class Command(BaseCommand):
