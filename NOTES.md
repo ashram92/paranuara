@@ -114,6 +114,8 @@ solve it with only one query, but it wasn't the most optimised since MySQL does 
 3. Run `./setup.sh`. Type in password if you need to, otherwise press enter.
 4. To run server - `./runserver.sh`
  
+Note: If you have different DB credentials (i.e. a password), you will need to change the settings.py file.
+ 
 ## Final Thoughts
 
 The challenge was straightforward for the most part. Obviously the biggest
