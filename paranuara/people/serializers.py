@@ -10,7 +10,7 @@ class FoodSerializer(serializers.ModelSerializer):
         fields = ('name',)
 
 
-class PersonSerializer(serializers.ModelSerializer):
+class PersonDetailsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Person
@@ -20,3 +20,5 @@ class PersonSerializer(serializers.ModelSerializer):
     age = serializers.CharField()  # Since the specs say return as string
     fruits = FoodSerializer(source='favourite_fruits', many=True)
     vegetables = FoodSerializer(source='favourite_vegetables', many=True)
+
+
