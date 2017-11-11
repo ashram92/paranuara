@@ -16,6 +16,11 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
+from paranuara.companies.urls import company_employee_details
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^api/company/(?P<pk>[0-9]+)/employees/$',
+        company_employee_details,
+        name='company-employees')
 ]
