@@ -6,6 +6,7 @@ from django.core.management.base import BaseCommand
 from django.db import IntegrityError
 
 from paranuara.companies.models import Company
+from paranuara.people import constants
 from paranuara.people.models import Person, FriendRelationship, Tag, Food, FavouriteFood
 
 
@@ -46,7 +47,13 @@ class Command(BaseCommand):
 
         food = Food.objects.filter(name=name).first()
         if not food:
-            food = Food(name=name)
+            if food in constants.FRUITS:
+                food_type = Food.FRUIT
+            elif food in constants.VEGETABLES:
+                food_type = Food.VEGETABLE
+            else:
+                food_type = None
+            food = Food(name=name, type=food_type)
             food.save()
 
         self.fruit_map[name] = food.id
