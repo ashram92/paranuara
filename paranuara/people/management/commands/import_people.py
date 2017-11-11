@@ -7,10 +7,19 @@ from django.db import IntegrityError
 
 from paranuara.companies.models import Company
 from paranuara.people import constants
-from paranuara.people.models import Person, FriendRelationship, Tag, Food, FavouriteFood
+from paranuara.people.models import (
+    Person, FriendRelationship, Tag, Food, FavouriteFood
+)
 
 
 FriendshipSet = namedtuple('FriendshipSet', ['person_1_id', 'person_2_id'])
+
+
+def normalise_balance(balance):
+    normalised = balance.replace('$', '')  # Strip `$`
+    normalised = normalised.replace('.', '')  # Strip `.`
+    normalised = normalised.replace(',', '')  # Strip `,`
+    return normalised
 
 
 class Command(BaseCommand):
@@ -59,13 +68,13 @@ class Command(BaseCommand):
 
         return food.id
 
-    def _import_person(self, person_data):
+    def _build_person_model(self, person_data):
         person = Person(
             id=person_data["index"],
             hash_id=person_data["_id"],
             guid=person_data["guid"],
             has_died=person_data["has_died"],
-            balance=person_data["balance"].replace('$','').replace('.','').replace(',',''),
+            balance=normalise_balance(person_data["balance"]),
             picture_url=person_data["picture"],
             age=person_data["age"],
             eye_color=person_data["eyeColor"],
@@ -85,7 +94,8 @@ class Command(BaseCommand):
             person.gender = Person.OTHER
 
         # Remove the last ':'
-        date_str = person_data['registered'][:-3] + person_data['registered'][-2:]
+        date_str = person_data['registered'][:-3] + person_data['registered'][
+                                                    -2:]
 
         person.registered_at = datetime.strptime(
             date_str,
@@ -97,13 +107,11 @@ class Command(BaseCommand):
         else:
             person.company_id = None
 
-        try:
-            person.save(force_insert=True)
-        except IntegrityError as e:
-            pass # print(e)  # TODO - FIX
+        return person
 
+    def _import_person_foods(self, person, foods):
         # Import all Food & Favourite Food
-        for food_name in person_data['favouriteFood']:
+        for food_name in foods:
             food_id = self._import_food(food_name)
 
             try:
@@ -112,20 +120,33 @@ class Command(BaseCommand):
             except IntegrityError:
                 pass
 
+    def _import_person_tags(self, person, tags):
         # Import all Tags
-        for tag in person_data['tags']:
+        for tag in tags:
             try:
                 Tag(person=person,
                     tag_name=tag).save(force_insert=True)
             except IntegrityError:
                 pass
 
-        # Add to Friendships
-        for friend in person_data['friends']:
+    def _update_friendship_sets(self, person, person_friends):
+        for friend in person_friends:
             self.friendship_sets.append(
                 FriendshipSet(person_1_id=person.id,
                               person_2_id=friend['index'])
             )
+
+    def _import_person(self, person_data):
+        person = self._build_person_model(person_data)
+
+        try:
+            person.save(force_insert=True)
+        except IntegrityError:
+            self.stderr('{} already exists. Skipping.'.format(person))
+
+        self._import_person_foods(person, person_data['favouriteFood'])
+        self._import_person_tags(person, person_data['tags'])
+        self._update_friendship_sets(person, person_data['friends'])
 
     def handle(self, *args, **options):
         with open(options['file_path']) as f:
