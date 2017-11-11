@@ -32,12 +32,11 @@ class Command(BaseCommand):
     def _import_all_friendships(self):
         for friendship_set in self.friendship_sets:
             try:
-                print(friendship_set)
                 FriendRelationship(person_1_id=friendship_set.person_1_id,
                                    person_2_id=friendship_set.person_2_id
                                    ).save(force_insert=True)
             except IntegrityError:
-                print('WHAT HAPPENED!', friendship_set)
+                pass
 
     def _import_food(self, name):
 
@@ -47,9 +46,9 @@ class Command(BaseCommand):
 
         food = Food.objects.filter(name=name).first()
         if not food:
-            if food in constants.FRUITS:
+            if name in constants.FRUITS:
                 food_type = Food.FRUIT
-            elif food in constants.VEGETABLES:
+            elif name in constants.VEGETABLES:
                 food_type = Food.VEGETABLE
             else:
                 food_type = None
