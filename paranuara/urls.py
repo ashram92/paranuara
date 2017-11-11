@@ -18,6 +18,8 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'company/', include('paranuara.companies.urls',
-                             namespace='company-urls')),
+    url(r'companies/', include('paranuara.companies.urls',
+                               namespace='company-urls')),
+    url(r'people/', include('paranuara.people.urls',
+                            namespace='people-urls')),
 ]

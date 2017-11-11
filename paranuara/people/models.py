@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.functional import cached_property
 
 from paranuara.companies.models import Company
 
@@ -39,6 +40,32 @@ class Person(models.Model):
 
     def __str__(self):
         return self.name
+
+    @property
+    def username(self):
+        """Create a unique username for this user
+
+        Example: User with name 'Ash Ramesh', id: 25 => ashramesh25
+
+        """
+        return "{}{}".format("".join(self.name.lower().split(" ")), self.id)
+
+    @cached_property
+    def favourite_foods(self):
+        return Food.objects.filter(favouritefood__person__id=self.id).all()
+
+    @cached_property
+    def favourite_fruits(self):
+        return [
+            food for food in self.favourite_foods if food.type == Food.FRUIT
+        ]
+
+    @cached_property
+    def favourite_vegetables(self):
+        return [
+            food for food in self.favourite_foods
+            if food.type == Food.VEGETABLE
+        ]
 
 
 class FriendRelationship(models.Model):
