@@ -34,7 +34,11 @@ class Person(models.Model):
     greeting = models.TextField()
     registered_at = models.DateTimeField()
 
-    company = models.ForeignKey(Company, null=True, blank=True)
+    company = models.ForeignKey(Company, null=True, blank=True,
+                                related_name='employees')
+
+    def __str__(self):
+        return self.name
 
 
 class FriendRelationship(models.Model):
