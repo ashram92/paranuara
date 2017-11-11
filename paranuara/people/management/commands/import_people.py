@@ -155,4 +155,4 @@ class Command(BaseCommand):
                 self._import_person(person_data)
             self._import_all_friendships()
 
-        self.stdout.write(self.style.SUCCESS('Import complete.'))
+        self.stdout.write(self.style.SUCCESS('People import complete.'))

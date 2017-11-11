@@ -24,4 +24,4 @@ class Command(BaseCommand):
                         'Company already imported: {}'.format(company))
                     )
 
-        self.stdout.write(self.style.SUCCESS('Import complete.'))
+        self.stdout.write(self.style.SUCCESS('Company import complete.'))
