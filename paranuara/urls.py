@@ -13,14 +13,11 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib import admin
-
-from paranuara.companies.urls import company_employee_details
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^api/company/(?P<pk>[0-9]+)/employees/$',
-        company_employee_details,
-        name='company-employees')
+    url(r'company/', include('paranuara.companies.urls',
+                             namespace='company-urls')),
 ]
