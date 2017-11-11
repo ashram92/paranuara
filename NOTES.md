@@ -109,9 +109,10 @@ solve it with only one query, but it wasn't the most optimised since MySQL does 
  
 ### Installation
 
-1. Ensure you have python3.4+, MySQL and virtualenv installed
-2. 
-
+1. Ensure you have python3.4+, MySQL (locally, user=root) and virtualenv installed
+2. Clone this repository and `cd` into the root of this directory
+3. Run `./setup.sh`. Type in password if you need to, otherwise press enter.
+4. To run server - `./runserver.sh`
  
 ## Final Thoughts
 
